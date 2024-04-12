@@ -4,10 +4,10 @@ local lib = lib
 local menus = {}
 
 local function newObject(sceneId)
-    local input = lib.inputDialog('Synced Object', {
+    local input = lib.inputDialog('Criador de Objetos', {
         {
             type = 'input',
-            label = 'Object Name',
+            label = 'Nome do Objeto',
             required = true,
         },
     })
@@ -16,8 +16,8 @@ local function newObject(sceneId)
 
     if not IsModelInCdimage(joaat(object)) then
         lib.notify({
-            title = 'Object Spawner',
-            description = ("The object \"%s\" is not in cd image, are you sure this exists?"):format(object),
+            title = 'Spawner de Objetos',
+            description = ("O objeto \"%s\" não existe no GTA V, você já instalou esse mod?"):format(object),
             type = 'error'
         })
         return
@@ -27,10 +27,10 @@ local function newObject(sceneId)
 end
 
 local function createNewScene()
-    local input = lib.inputDialog('New Scene', {
+    local input = lib.inputDialog('Novo Projeto', {
         {
             type = 'input',
-            label = 'Scene Name',
+            label = 'Nome do Projeto',
             icon = 'pencil',
             required = true,
         },
@@ -44,8 +44,8 @@ local function createNewScene()
 
     if newScene then
         lib.notify({
-            title = 'Object Spawner',
-            description = ('Scene %s created'):format(name),
+            title = 'Spawner de Objetos',
+            description = ('Objeto %s criado'):format(name),
             type = 'success'
         })
     end
@@ -53,19 +53,19 @@ end
 
 lib.registerContext({
     id = 'object_menu_main',
-    title = 'Synced Objects',
+    title = 'Criador de Objetos',
     options = {
         {
-            title = 'Scenes',
-            description = 'view scenes that have been created',
+            title = 'Projetos',
+            description = 'Ver todos os projetos criados',
             icon = 'camera',
             onSelect = function()
                 menus.viewAllScenes()
             end,
         },
         {
-            title = 'Create a New Scene',
-            description = 'edit objects that have been placed',
+            title = 'Criar um novo projeto',
+            description = 'Crie um novo projeto com vários objetos',
             icon = 'plus',
             onSelect = function()
                 createNewScene()
@@ -83,8 +83,8 @@ function menus.viewAllScenes()
 
     if #allScenes == 0 then
         lib.notify({
-            title = 'Object Spawner',
-            description = 'No scenes created',
+            title = 'Spawner de Objetos',
+            description = 'Nenhum projeto criado',
             type = 'error'
         })
         return
@@ -100,7 +100,7 @@ function menus.viewAllScenes()
 
         options[#options+1] = {
             title = name,
-            description = ('View Scene: %s (%s Objects)'):format(name, count),
+            description = ('Ver projeto: %s (%s Objetos)'):format(name, count),
             icon = 'camera',
             onSelect = function()
                 menus.viewObjectsInScene(id, name)
@@ -110,7 +110,7 @@ function menus.viewAllScenes()
 
     lib.registerContext({
         id = 'object_menu_scenes',
-        title = 'Scenes',
+        title = 'Projetos',
         menu = 'object_menu_main',
         options = options,
     })
@@ -127,7 +127,7 @@ function menus.editConfirmMenu(insertId)
     end
     lib.registerContext({
         id = 'object_confirm_edit',
-        title = ('Edit: %s'):format(object.model),
+        title = ('Editar: %s'):format(object.model),
         onExit = function()
             if DoesEntityExist(object.handle) then
                 SetEntityDrawOutline(object.handle, false)
@@ -135,7 +135,7 @@ function menus.editConfirmMenu(insertId)
         end,
         options = {
             {
-                title = 'Edit',
+                title = 'Editar',
                 icon = 'check',
                 disabled = not DoesEntityExist(object.handle),
                 onSelect = function()
@@ -144,7 +144,7 @@ function menus.editConfirmMenu(insertId)
                 end,
             },
             {
-                title = 'Delete',
+                title = 'Excluir',
                 icon = 'trash',
                 disabled = not DoesEntityExist(object.handle),
                 onSelect = function()
@@ -153,7 +153,7 @@ function menus.editConfirmMenu(insertId)
                 end,
             },
             {
-                title = 'TP To Entity',
+                title = 'Teleportar',
                 icon = 'arrows-to-circle',
                 onSelect = function()
                     if DoesEntityExist(object.handle) then
@@ -184,8 +184,8 @@ function menus.viewObjectsInScene(sceneId, sceneName)
     local options = {}
 
     options[#options+1] = {
-        title = 'Add New Object',
-        description = 'add a new object to this scene',
+        title = 'Adicionar novo objeto',
+        description = 'adiciona um novo objeto ao projeto',
         icon = 'plus',
         onSelect = function()
             newObject(sceneId)

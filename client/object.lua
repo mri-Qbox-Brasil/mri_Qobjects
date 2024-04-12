@@ -54,8 +54,8 @@ function obj.previewObject(model, sceneId)
 
     lib.hideTextUI()
     lib.showTextUI(
-        '[E] Place Object  \n [G] Rotate 90  \n [L/R Arrow] Rotate Left/Right  \n [Q] Cancel', {
-            position = "left-center",
+        '[E] Colocar objeto  \n [G] Girar 90º  \n [⬅/⮕] Girar Esquerda/Direita  \n [Q] Cancelar', {
+            position = "right-center",
         })
 
     CreateThread(function()
