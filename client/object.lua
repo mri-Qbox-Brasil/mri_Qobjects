@@ -5,6 +5,14 @@ ClientObjects = {}
 local inObjectPreview = false
 local handle = nil
 
+function obj.updateSceneName(insertId, newName)
+    TriggerServerEvent('objects:server:updateSceneName', insertId, newName)
+end
+
+function obj.removeScene(insertId)
+    TriggerServerEvent('objects:server:removeScene', insertId)
+end
+
 ---removed an object from the database and the world
 ---@param insertId number
 function obj.removeObject(insertId)
@@ -20,6 +28,7 @@ function obj.editPlaced(insertId)
 
     if not DoesEntityExist(handle) then return end
 
+    exports['fivem-freecam']:SetActive(true)
     local data = exports.object_gizmo:useGizmo(handle)
 
     if data then
@@ -36,6 +45,8 @@ function obj.editPlaced(insertId)
             insertId = insertId
         } )
     end
+    exports['fivem-freecam']:SetActive(false)
+    lib.showContext('object_confirm_edit')
 end
 
 ---spawn an object in the world
@@ -91,7 +102,7 @@ function obj.previewObject(model, sceneId)
                 if IsControlJustPressed(0, 38) then
                     local rotation = GetEntityRotation(handle, 2)
                     local heading = GetEntityHeading(handle)
-                    TriggerServerEvent('objects:server:newObject', {
+                    local insertId = lib.callback.await('objects:server:newObject', 2000, {
                         model = model,
                         x = ('%.3f'):format(coords.x),
                         y = ('%.3f'):format(coords.y),
@@ -102,12 +113,16 @@ function obj.previewObject(model, sceneId)
                         heading = heading,
                         sceneid = sceneId
                     })
-
                     lib.hideTextUI()
                     SetEntityAsMissionEntity(handle, false, true)
                     DeleteObject(handle)
                     inObjectPreview = false
                     handle = nil
+
+                    while insertId == nil do Wait(0) end
+                    while not DoesEntityExist(ClientObjects[insertId].handle) do Wait(0) end
+                    local menus = require 'client.menus'
+                    menus.editConfirmMenu(insertId)
                 end
             end
         end
@@ -178,7 +193,7 @@ CreateThread(function()
         local pCoords = GetEntityCoords(cache.ped)
 
         for k, v in pairs(ClientObjects) do
-            local isClose = #(pCoords - v.coords) < 100.0
+            local isClose = #(pCoords - v.coords) < 300.0
 
             if not isClose and v.handle then
                 forceDeleteEntity(k)

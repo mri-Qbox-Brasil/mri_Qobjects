@@ -40,6 +40,15 @@ function db.insertNewSyncedObject(model, x, y, z, rx, ry, rz, heading, sceneid)
     return MySQL.prepare.await(INSERT_NEW_SYNCED_OBJECT, { model, x, y, z, rx, ry, rz, heading, sceneid })
 end
 
+local UPDATE_SCENE_NAME_BY_ID = 'UPDATE `synced_objects_scenes` SET `name` = ? WHERE `id` = ?'
+---Atualizar o nome de uma cena pelo ID
+---@param id number
+---@param newName string
+---@return table
+function db.updateSceneNameById(id, newName)
+    return MySQL.prepare.await(UPDATE_SCENE_NAME_BY_ID, { newName, id })
+end
+
 local DELETE_SCENE_BY_ID = 'DELETE FROM `synced_objects_scenes` WHERE `id` = ?'
 ---Delete a scene by id
 ---@param id number

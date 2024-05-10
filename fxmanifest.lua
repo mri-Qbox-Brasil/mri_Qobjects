@@ -2,7 +2,7 @@ fx_version 'cerulean'
 use_experimental_fxv2_oal 'yes'
 game 'gta5'
 
-description 'object spawner for fivem'
+description 'mri_Qbox object spawner'
 author 'qw-scripts'
 version '0.2.0'
 

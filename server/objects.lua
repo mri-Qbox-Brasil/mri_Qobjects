@@ -20,6 +20,24 @@ function objects.spawnNewObject(data)
     }
 
     TriggerClientEvent('objects:client:addObject', -1, ServerObjects[insertId])
+    return insertId
+end
+
+--- Altera o nome de uma cena no banco de dados
+---@param sceneId number ID da cena a ser atualizada
+---@param newName string Novo nome da cena
+function objects.updateSceneName(sceneId, newName)
+    if sceneId and newName then
+        db.updateSceneNameById(sceneId, newName)
+    end
+end
+
+--- removes an scene from the database
+---@param insertId number
+function objects.deleteScene(insertId)
+    if insertId then
+        db.deleteSceneById(insertId)
+    end
 end
 
 --- removes an object from the database and the world

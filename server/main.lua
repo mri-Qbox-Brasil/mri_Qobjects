@@ -5,8 +5,21 @@ RegisterNetEvent('objects:server:newObject', function(data)
     objects.spawnNewObject(data)
 end)
 
+lib.callback.register('objects:server:newObject', function(source, data)
+    local insertId = objects.spawnNewObject(data)
+    return insertId
+end)
+
 RegisterNetEvent('objects:server:updateObject', function(data)
     objects.updateObject(data)
+end)
+
+RegisterNetEvent("objects:server:updateSceneName", function(insertId, newName)
+    objects.updateSceneName(insertId, newName)
+end)
+
+RegisterNetEvent("objects:server:removeScene", function(insertId)
+    objects.deleteScene(insertId)
 end)
 
 RegisterNetEvent("objects:server:removeObject", function(insertId)
@@ -30,11 +43,4 @@ lib.callback.register('objects:newScene', function(source, sceneName)
     end
 
     return false
-end)
-
-lib.addCommand('objectspawner', {
-    help = 'open the object spawner',
-    restricted = 'group.admin'
-}, function(source, args, raw)
-    TriggerClientEvent('objects:client:menu', source)
 end)
