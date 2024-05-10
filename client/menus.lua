@@ -340,7 +340,7 @@ function menus.viewObjectsInScene(sceneId, sceneName)
             title = '**['..object.id..']** '..model,
             description = fmtCoords,
             icon = 'fa-solid fa-caret-right',
-            image = 'https://gta-objects.xyz/gallery/objects/'..model..'.jpg',
+            image = 'https://mri-qbox-brasil.github.io/gta-assets/assets/'..model..'.jpg',
             metadata = {
                 label = model,
             },
