@@ -145,15 +145,6 @@ function menus.viewAllScenes()
         }
     end
 
-    if #allScenes == 0 then
-        lib.notify({
-            title = 'Spawner de Objetos',
-            description = 'Nenhum projeto criado',
-            type = 'error'
-        })
-        return
-    end
-
     options[#options+1] = {
         title = 'Total de projetos: '..#allScenes,
         icon = 'fa-solid fa-boxes-stacked'
