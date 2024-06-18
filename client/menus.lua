@@ -277,7 +277,7 @@ function menus.viewObjectsInScene(sceneId, sceneName)
         end,
     }
 
-    options[#options+1] = { 
+    options[#options+1] = {
         title = 'Renomear',
         icon = 'fa-solid fa-pen-to-square',
         disabled = disable,
@@ -331,7 +331,7 @@ function menus.viewObjectsInScene(sceneId, sceneName)
             title = '**['..object.id..']** '..model,
             description = fmtCoords,
             icon = 'fa-solid fa-caret-right',
-            image = 'https://mri-qbox-brasil.github.io/gta-assets/assets/'..model..'.jpg',
+            image = Config.imgSrv .. 'assets/'..model..'.jpg',
             metadata = {
                 label = model,
             },
