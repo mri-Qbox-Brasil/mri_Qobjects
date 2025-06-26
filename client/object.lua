@@ -55,7 +55,7 @@ end
 function obj.previewObject(model, sceneId)
     inObjectPreview = true
 
-    lib.requestModel(joaat(model), 1000)
+    lib.requestModel(joaat(model), 100000)
 
     handle = CreateObject(model, GetEntityCoords(cache.ped), false, true, true)
 
@@ -168,13 +168,39 @@ RegisterNetEvent("objects:client:loadObjects", function(objects)
     ClientObjects = objects
 end)
 
+local function SpawnObject(payload, timeoutMs)
+    local modelHash = joaat(payload.model)
+    timeoutMs = timeoutMs or 10000 -- timeout padrão: 10 segundos
 
-local function SpawnObject(payload)
-    lib.requestModel(joaat(payload.model))
-    local obj = CreateObjectNoOffset(payload.model, payload.coords.x, payload.coords.y  , payload.coords.z, false, true, true)
+    if not IsModelValid(modelHash) then
+        print('Modelo inválido:', payload.model)
+        return nil
+    end
+
+    RequestModel(modelHash)
+
+    local waited = 0
+    while not HasModelLoaded(modelHash) do
+        Wait(50)
+        waited += 50
+        if waited >= timeoutMs then
+            print('Timeout ao carregar modelo:', payload.model)
+            return nil
+        end
+    end
+
+    local obj = CreateObjectNoOffset(modelHash, payload.coords.x, payload.coords.y, payload.coords.z, false, false, false)
+    if not DoesEntityExist(obj) then
+        print('Falha ao criar objeto:', payload.model)
+        return nil
+    end
+
     SetEntityRotation(obj, payload.rotation.x, payload.rotation.y, payload.rotation.z, 2, true)
     FreezeEntityPosition(obj, true)
-    SetModelAsNoLongerNeeded(payload.model)
+    SetEntityDynamic(obj, false)
+    SetEntityProofs(obj, false, false, false, true, false, false, false, false)
+    SetModelAsNoLongerNeeded(modelHash)
+
     return obj
 end
 

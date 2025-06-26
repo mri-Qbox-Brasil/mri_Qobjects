@@ -69,6 +69,7 @@ local function newObject(sceneId)
             description = ("O objeto \"%s\" não existe no GTA V, você já instalou esse mod?"):format(object),
             type = 'error'
         })
+        newObject(sceneId)
         return
     end
 
@@ -331,7 +332,7 @@ function menus.viewObjectsInScene(sceneId, sceneName)
             title = '**['..object.id..']** '..model,
             description = fmtCoords,
             icon = 'fa-solid fa-caret-right',
-            image = Config.imgSrv .. 'assets/'..model..'.jpg',
+            image = Config.imgSrv ..model..'.jpg',
             metadata = {
                 label = model,
             },
