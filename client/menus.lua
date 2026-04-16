@@ -332,7 +332,7 @@ function menus.viewObjectsInScene(sceneId, sceneName)
             title = '**['..object.id..']** '..model,
             description = fmtCoords,
             icon = 'fa-solid fa-caret-right',
-            image = Config.imgSrv ..model..'.jpg',
+            image = Config.imgSrv ..model..'.webp',
             metadata = {
                 label = model,
             },
